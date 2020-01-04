@@ -9,12 +9,17 @@ import { RouteKeys } from '../resources/constants';
 import { useBLSignUp } from '../hooks/business-logic/auth';
 import { Button, useTheme } from 'react-native-paper';
 import { white } from 'react-native-paper/lib/typescript/src/styles/colors';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
+import { StackNavigationOptions } from 'react-navigation-stack/lib/typescript/src/vendor/types';
+import SignInScreen from './SignInScreen';
 
 interface Props extends NavigationInjectedProps {}
 
 function SignUpScreen(props: Props) {
   const refs = useRef(new Map());
   const { signUp, success } = useBLSignUp();
+  const { t } = useTranslation(RouteKeys.SignUp);
   const theme = useTheme();
 
   if (success) {
@@ -54,7 +59,7 @@ function SignUpScreen(props: Props) {
                 mode="contained"
                 onPress={formik.handleSubmit}
               >
-                Submit
+                {t('submit')}
               </Button>
             </>
           )}
@@ -63,5 +68,11 @@ function SignUpScreen(props: Props) {
     </Layout>
   );
 }
+
+SignUpScreen.navigationOptions = () => {
+  return {
+    title: i18next.t(`${RouteKeys.SignUp}:title`)
+  } as StackNavigationOptions;
+};
 
 export default SignUpScreen;

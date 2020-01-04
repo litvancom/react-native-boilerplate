@@ -3,12 +3,15 @@ import { HelperText, TextInput } from 'react-native-paper';
 import { FormikProps, useField, useFormikContext } from 'formik';
 import { TextInputProps } from 'react-native';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
+import { RouteKeys } from '../resources/constants';
 
 interface Props extends TextInputProps {
   name: string;
   nextName?: string;
   refs?: React.MutableRefObject<Map<string, any>>;
-  lowercased?: boolean
+  lowercased?: boolean;
+  label?: string;
 }
 
 function BPTextField({ name, refs, ...props }: Props) {
@@ -20,6 +23,8 @@ function BPTextField({ name, refs, ...props }: Props) {
           return _.invoke(refs.current.get(props.nextName), 'focus');
         }
       : null;
+  const { t } = useTranslation('fields');
+  const label = props.label ? props.label : _.upperFirst(t(name));
 
   return (
     <>
@@ -28,7 +33,7 @@ function BPTextField({ name, refs, ...props }: Props) {
         mode="outlined"
         returnKeyType={'next'}
         autoCorrect={false}
-        label={_.upperFirst(name)}
+        label={label}
         onSubmitEditing={onSubmitEditing}
         {...props}
         value={field.value}

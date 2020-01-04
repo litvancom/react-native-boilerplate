@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { AsyncStorage, StyleSheet, Text, View } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Layout from '../components/Layout';
 import { NavigationInjectedProps } from 'react-navigation';
 import { Button, HelperText, TextInput } from 'react-native-paper';
@@ -8,6 +8,9 @@ import { loginValidationSchema } from '../resources/validationSchemas';
 import { RouteKeys } from '../resources/constants';
 import BPTextField from '../components/BPTextField';
 import { useBLSignIn } from '../hooks/business-logic/auth';
+import { useTranslation } from 'react-i18next';
+import { StackNavigationOptions } from 'react-navigation-stack/lib/typescript/src/vendor/types';
+import i18next from 'i18next';
 
 interface Props extends NavigationInjectedProps {}
 
@@ -23,13 +26,14 @@ function SignInScreen(props: Props) {
   if (success) {
     props.navigation.navigate(RouteKeys.AuthLoading);
   }
+  const { t, i18n } = useTranslation(RouteKeys.SignIn);
 
   return (
     <Layout>
       <Formik
         initialValues={{
-          email: 'test@test.com',
-          password: 'test'
+          email: '',
+          password: ''
         }}
         validationSchema={loginValidationSchema}
         onSubmit={signIn}
@@ -38,6 +42,9 @@ function SignInScreen(props: Props) {
           <View style={styles.container}>
             <View style={styles.logoContainer}>
               <Text style={styles.logoText}>Logo</Text>
+              <TouchableOpacity onPress={() => i18n.changeLanguage(i18n.language === 'ru' ? 'en' : 'ru')}>
+                <Text>Change</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.formContainer}>
               <BPTextField lowercased refs={refs} nextName={'password'} name={'email'} />
@@ -58,7 +65,7 @@ function SignInScreen(props: Props) {
                     props.navigation.navigate(RouteKeys.SignUp);
                   }}
                 >
-                  Sign Up
+                  {t('signUp')}
                 </Button>
                 <View style={styles.buttonSpacer} />
                 <Button
@@ -68,7 +75,7 @@ function SignInScreen(props: Props) {
                   onPress={formik.handleSubmit}
                   contentStyle={styles.buttonContent}
                 >
-                  Login
+                  {t('signIn')}
                 </Button>
               </View>
             </View>
@@ -109,5 +116,11 @@ const styles = StyleSheet.create({
     width: '10%'
   }
 });
+
+SignInScreen.navigationOptions = () => {
+  return {
+    title: i18next.t(`${RouteKeys.SignIn}:title`)
+  } as StackNavigationOptions;
+};
 
 export default SignInScreen;

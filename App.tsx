@@ -4,6 +4,7 @@ import AppContainer from './src/routing';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { GlobalContextProvider } from './src/contexts/GlobalContext';
 import { THEME } from './src/resources/constants';
+import './src/resources/i18n';
 
 export default function App() {
   return (

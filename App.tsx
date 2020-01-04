@@ -1,18 +1,25 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import AppContainer from './src/routing'
+import { StyleSheet } from 'react-native';
+import AppContainer from './src/routing';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { GlobalContextProvider } from './src/contexts/GlobalContext';
+import { THEME } from './src/resources/constants';
 
 export default function App() {
-    return (
-        <AppContainer/>
-    );
+  return (
+    <PaperProvider theme={THEME}>
+      <GlobalContextProvider>
+        <AppContainer />
+      </GlobalContextProvider>
+    </PaperProvider>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
